@@ -2,6 +2,13 @@
 
 namespace JanStrassburg\Compressor;
 
+/**
+ * A configuration container for the compressor.
+ * All target directories can be set here.
+ *
+ * Class Configuration
+ * @package JanStrassburg\Compressor
+ */
 class Configuration {
 
 	/**

@@ -5,6 +5,13 @@ namespace JanStrassburg\Compressor;
 use JanStrassburg\Compressor\Filter\CssMinFilter;
 use JanStrassburg\Compressor\Filter\JsMinFilter;
 
+/**
+ * A simple js/css compressor.
+ * Set the dependencies and execute run.
+ *
+ * Class Compressor
+ * @package JanStrassburg\Compressor
+ */
 class Compressor {
 
 	/**
