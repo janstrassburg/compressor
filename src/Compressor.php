@@ -2,12 +2,13 @@
 
 namespace JanStrassburg\Compressor;
 
-use JsMin\Minify;
+use JanStrassburg\Compressor\Filter\CssMinFilter;
+use JanStrassburg\Compressor\Filter\JsMinFilter;
 
 class Compressor {
 
 	/**
-	 * @var \JanStrassburg\Compressor\Configuration
+	 * @var Configuration
 	 */
 	private $config;
 
@@ -17,11 +18,18 @@ class Compressor {
 	private $assets;
 
 	/**
-	 * @var \CssMin
+	 * @var CssMinFilter
 	 */
-	private $cssMin;
+	private $cssMinFilter;
 
+	/**
+	 * @var JsMinFilter
+	 */
+	private $jsMinFilter;
 
+	/**
+	 * Executes compressor
+	 */
 	public function run() {
 		$this->minify('js');
 		$this->minify('css');
@@ -34,11 +42,8 @@ class Compressor {
 		if (!empty($this->assets[$type])) {
 			$string = '';
 			foreach ($this->assets[$type] as $file) {
-				if ($type == 'css') {
-					$string .= $this->cssMin->minify(file_get_contents($this->config->getRootDir() . $file));
-				} elseif ($type == 'js') {
-					$string .= Minify::minify(file_get_contents($this->config->getRootDir() . $file));
-				}
+				$filterName = $type . 'MinFilter';
+				$this->$filterName->minify(file_get_contents($this->config->getRootDir() . $file));
 			}
 			$this->writeFile($string, $type);
 		}
@@ -71,10 +76,17 @@ class Compressor {
 	}
 
 	/**
-	 * @param \CssMin $cssMin
+	 * @param CssMinFilter $cssMinFilter
 	 */
-	public function setCssMin(\CssMin $cssMin) {
-		$this->cssMin = $cssMin;
+	public function setCssMinFilter(CssMinFilter $cssMinFilter) {
+		$this->cssMinFilter = $cssMinFilter;
+	}
+
+	/**
+	 * @param JsMinFilter $jsMinFilter
+	 */
+	public function setJsMinFilter(JsMinFilter $jsMinFilter) {
+		$this->jsMinFilter = $jsMinFilter;
 	}
 
 }

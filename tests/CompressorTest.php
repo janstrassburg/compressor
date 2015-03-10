@@ -4,6 +4,8 @@ namespace JanStrassburg\Compressor\Test;
 
 use JanStrassburg\Compressor\Compressor;
 use JanStrassburg\Compressor\Configuration;
+use JanStrassburg\Compressor\Filter\CssMinFilter;
+use JanStrassburg\Compressor\Filter\JsMinFilter;
 
 class CompressorTest extends \PHPUnit_Framework_TestCase {
 
@@ -11,9 +13,9 @@ class CompressorTest extends \PHPUnit_Framework_TestCase {
 		$config = new Configuration();
 		$config->setRootDir(__DIR__);
 		$config->setTempDir('/temp');
-
 		$compressor = new Compressor();
-		$compressor->setCssMin(new \CssMin());
+		$compressor->setCssMinFilter(new CssMinFilter());
+		$compressor->setJsMinFilter(new JsMinFilter());
 		$compressor->setConfig($config);
 		$compressor->setAssets(array(
 			'js' => array(
@@ -24,6 +26,8 @@ class CompressorTest extends \PHPUnit_Framework_TestCase {
 			)
 		));
 		$compressor->run();
+		$this->assertFileExists($config->getTempDir() . '/final.css');
+		$this->assertFileExists($config->getTempDir() . '/final.js');
 	}
 
 }
