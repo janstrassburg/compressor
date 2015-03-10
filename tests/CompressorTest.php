@@ -25,6 +25,9 @@ class CompressorTest extends \PHPUnit_Framework_TestCase {
 				'/assets/test.css'
 			)
 		));
+		if(!is_dir($config->getTempDir())){
+			mkdir($config->getTempDir());
+		}
 		$compressor->run();
 		$this->assertFileExists($config->getTempDir() . '/final.css');
 		$this->assertFileExists($config->getTempDir() . '/final.js');
